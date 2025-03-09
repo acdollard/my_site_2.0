@@ -1,7 +1,7 @@
 ---
 // ./src/layouts/Layout.astro
 import { VisualEditing } from "@sanity/astro/visual-editing";
-
+import Navbar from "../components/Navbar.astro";
 const visualEditingEnabled =
   import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED == "true";
 ---
@@ -13,9 +13,10 @@ const visualEditingEnabled =
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <title>T.W.A.T. | This Week in AlexTown</title>
   </head>
   <body>
+    <Navbar />
     <slot />
     <VisualEditing enabled={visualEditingEnabled} />
   </body>

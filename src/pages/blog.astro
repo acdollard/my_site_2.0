@@ -1,0 +1,71 @@
+---
+import { sanityClient } from "sanity:client";
+import type { PortableTextBlock } from "@portabletext/types";
+import Layout from "../layouts/Layout.astro";
+
+interface Post {
+  title: string;
+  slug: { current: string };
+  publishedAt: string;
+  excerpt?: string;
+  mainImage?: {
+    asset: {
+      _id: string;
+      url: string;
+    };
+  };
+}
+
+const query = `*[_type == "post"] | order(publishedAt desc) {
+  title,
+  slug,
+  publishedAt,
+  excerpt,
+  mainImage {
+    asset->{
+      _id,
+      url
+    }
+  }
+}`;
+
+const posts = await sanityClient.fetch<Post[]>(query);
+---
+
+<Layout>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-8">Blog Posts</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {
+        posts.map((post: Post) => (
+          <article class="bg-white rounded-lg shadow-md overflow-hidden hover:-translate-y-1 transition-transform duration-200 ease-in-out border border-gray-200">
+            {post.mainImage && (
+              <img
+                src={post.mainImage.asset.url}
+                alt={post.title}
+                class="w-full h-48 object-cover"
+              />
+            )}
+            <div class="p-6">
+              <h2 class="text-xl font-semibold text-gray-900 mb-2">
+                {post.title}
+              </h2>
+              <time datetime={post.publishedAt} class="text-sm text-gray-500">
+                {new Date(post.publishedAt).toLocaleDateString()}
+              </time>
+              {post.excerpt && (
+                <p class="mt-4 text-gray-600 line-clamp-3">{post.excerpt}</p>
+              )}
+              <a
+                href={`/post/${post.slug.current}`}
+                class="inline-block mt-4 text-gray-900 font-medium hover:underline"
+              >
+                Read more →
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </main>
+</Layout>

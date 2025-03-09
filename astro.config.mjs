@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
+import tailwind from "@astrojs/tailwind";
 
 import { loadEnv } from "vite";
 const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } = loadEnv(
@@ -25,5 +26,6 @@ export default defineConfig({
       },
     }),
     react(),
+    tailwind(),
   ],
 });
