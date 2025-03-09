@@ -22,12 +22,37 @@ export async function getStaticPaths() {
 const { params } = Astro;
 
 const { data: post } = await loadQuery<SanityDocument>({
-  query: `*[_type == "post" && slug.current == $slug][0]`,
+  query: `*[_type == "post" && slug.current == $slug][0]{
+    title,
+    slug,
+    publishedAt,
+    excerpt,
+    mainImage {
+      asset->{
+        _id,
+        url
+      }
+    },
+    body
+  }`,
   params,
 });
 ---
 
 <Layout>
-  <h1>A post about {post.title}</h1>
-  <PortableText portableText={post.body} />
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <article class="prose prose-lg mx-auto">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">{post.title}</h1>
+      {
+        post.mainImage && (
+          <img
+            src={post.mainImage.asset.url}
+            alt={post.title}
+            class="w-full h-48 object-cover"
+          />
+        )
+      }
+      <PortableText portableText={post.body} />
+    </article>
+  </div>
 </Layout>
