@@ -1,9 +1,59 @@
 ---
+import { sanityClient } from "sanity:client";
 
+interface Category {
+  _id: string;
+  title: string;
+}
+
+interface Post {
+  title: string;
+  slug: { current: string };
+  publishedAt: string;
+  excerpt?: string;
+  categories: Category[];
+  mainImage?: {
+    asset: {
+      _id: string;
+      url: string;
+    };
+  };
+}
+
+const query = `{
+  "posts": *[_type == "post"] | order(publishedAt desc) {
+  title,
+    slug,
+    publishedAt,
+    excerpt,
+    categories[]->{
+      _id,
+      title
+    },
+    mainImage {
+      asset->{
+        _id,
+        url
+      }
+    }
+  },
+  "categories": *[_type == "category"] {
+    _id,
+    title
+  }
+}`;
+
+const { posts, categories } = await sanityClient.fetch<{
+  posts: Post[];
+  categories: Category[];
+}>(query);
+
+console.log(posts);
+console.log(categories);
 ---
 
-<div id="container">
-  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 bg-slate-200">
+<div id="container" class="p-4">
+  <main class="mx-auto max-w-7xl sm:px-6 lg:px-8 py-8 bg-slate-200">
     <div class="flex flex-col items-center">
       <h1 class="text-4xl font-bold text-gray-900 mb-8">
         This Week in Alex Town
@@ -13,6 +63,54 @@
       </h2>
     </div>
   </main>
+  <h2 class="text-3xl py-4 font-bold">Recent Writings</h2>
+  <div
+    id="posts-grid"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+  >
+    {
+      posts.map((post: Post) => (
+        <article
+          class="bg-white rounded-lg shadow-md overflow-hidden hover:-translate-y-1 transition-transform duration-200 ease-in-out border border-gray-200"
+          data-categories={post.categories?.map((cat) => cat._id).join(",")}
+        >
+          {post.mainImage && (
+            <img
+              src={post.mainImage.asset.url}
+              alt={post.title}
+              class="w-full h-48 object-cover"
+            />
+          )}
+          <div class="p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">
+              {post.title}
+            </h2>
+            <time datetime={post.publishedAt} class="text-sm text-gray-500">
+              {new Date(post.publishedAt).toLocaleDateString()}
+            </time>
+            {post.categories && (
+              <div class="mt-2 space-x-2">
+                {post.categories.map((category) => (
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    {category.title}
+                  </span>
+                ))}
+              </div>
+            )}
+            {post.excerpt && (
+              <p class="mt-4 text-gray-600 line-clamp-3">{post.excerpt}</p>
+            )}
+            <a
+              href={`/post/${post.slug.current}`}
+              class="inline-block mt-4 text-gray-900 font-medium hover:underline"
+            >
+              Read more →
+            </a>
+          </div>
+        </article>
+      ))
+    }
+  </div>
 </div>
 
 <style></style>
