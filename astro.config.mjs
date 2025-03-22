@@ -6,6 +6,7 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 
 import { loadEnv } from "vite";
+import netlify from "@astrojs/netlify";
 const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } = loadEnv(
   process.env.NODE_ENV,
   process.cwd(),
@@ -28,4 +29,6 @@ export default defineConfig({
     react(),
     tailwind(),
   ],
+
+  adapter: netlify(),
 });
