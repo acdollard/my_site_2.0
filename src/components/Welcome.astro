@@ -55,63 +55,144 @@ console.log(categories);
 <div id="container" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
   <main class="mx-auto max-w-7xl sm:px-6 lg:px-8 py-8">
     <div class="flex flex-col items-center">
-      <h1 class="text-4xl font-bold text-gray-900 mb-8">
+      <h1 class="text-4xl font-bold text-slate-800 mb-8">
         This Week in Alex Town
       </h1>
-      <h2 class="text-2xl text-gray-900">
+      <h2 class="text-2xl text-slate-800">
         T.W.A.T. is a blog written by a dingus. Don't read it.
       </h2>
     </div>
   </main>
 
-  <h2 class="text-3xl py-8 font-bold">Recent Writings</h2>
-  <div
-    id="posts-grid"
-    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-  >
-    {
-      posts.map((post: Post) => (
-        <article
-          class="bg-white rounded-lg shadow-md overflow-hidden hover:-translate-y-1 transition-transform duration-200 ease-in-out border border-gray-200"
-          data-categories={post.categories?.map((cat) => cat._id).join(",")}
-        >
-          {post.mainImage && (
-            <img
-              src={post.mainImage.asset.url}
-              alt={post.title}
-              class="w-full h-48 object-cover"
-            />
-          )}
-          <div class="p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-2">
-              {post.title}
-            </h2>
-            <time datetime={post.publishedAt} class="text-sm text-gray-500">
-              {new Date(post.publishedAt).toLocaleDateString()}
-            </time>
-            {post.categories && (
-              <div class="mt-2 space-x-2">
-                {post.categories.map((category) => (
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                    {category.title}
-                  </span>
-                ))}
-              </div>
-            )}
-            {post.excerpt && (
-              <p class="mt-4 text-gray-600 line-clamp-3">{post.excerpt}</p>
-            )}
-            <a
-              href={`/post/${post.slug.current}`}
-              class="inline-block mt-4 text-gray-900 font-medium hover:underline"
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Category Filter -->
+    <div class="mb-8">
+      <div class="text-sm font-medium text-slate-800 mb-3">
+        Filter by Categories
+      </div>
+      <div class="flex flex-wrap gap-2" id="category-filters">
+        {
+          categories.map((category) => (
+            <button
+              type="button"
+              data-category-id={category._id}
+              class="category-filter inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 transition-colors duration-200"
             >
-              Read more →
-            </a>
-          </div>
-        </article>
-      ))
-    }
+              {category.title}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <div
+      id="posts-grid"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+    >
+      {
+        posts.map((post: Post) => (
+          <article
+            class="blog-card rounded-lg overflow-hidden hover:-translate-y-1 transition-transform duration-200 ease-in-out border border-gray-200"
+            data-categories={post.categories?.map((cat) => cat._id).join(",")}
+          >
+            {post.mainImage && (
+              <img
+                src={post.mainImage.asset.url}
+                alt={post.title}
+                class="w-full h-48 object-cover"
+              />
+            )}
+            <div class="p-6">
+              <h2 class="text-xl font-semibold text-gray-900 mb-2">
+                {post.title}
+              </h2>
+              <time datetime={post.publishedAt} class="text-sm text-gray-500">
+                {new Date(post.publishedAt).toLocaleDateString()}
+              </time>
+              {post.categories && (
+                <div class="mt-2 space-x-2">
+                  {post.categories.map((category) => (
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      {category.title}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {post.excerpt && (
+                <p class="mt-4 text-gray-600 line-clamp-3">{post.excerpt}</p>
+              )}
+              <a
+                href={`/post/${post.slug.current}`}
+                class="inline-block mt-4 text-gray-900 font-medium hover:underline"
+              >
+                Read more →
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
   </div>
 </div>
 
-<style></style>
+<script>
+  // Client-side filtering logic
+  const categoryFilters = document.querySelectorAll(".category-filter");
+  const postsGrid = document.getElementById("posts-grid");
+  const articles = postsGrid?.getElementsByTagName("article");
+  const selectedCategories = new Set<string>();
+
+  categoryFilters.forEach((filter) => {
+    filter.addEventListener("click", () => {
+      const categoryId = filter.getAttribute("data-category-id") as string;
+
+      // Toggle selection
+      if (selectedCategories.has(categoryId)) {
+        selectedCategories.delete(categoryId);
+        filter.classList.remove("bg-indigo-600", "text-white");
+        filter.classList.add("bg-gray-100", "text-gray-800");
+      } else {
+        selectedCategories.add(categoryId);
+        filter.classList.remove("bg-gray-100", "text-gray-800");
+        filter.classList.add("bg-indigo-600", "text-white");
+      }
+
+      // Filter articles
+      if (articles) {
+        Array.from(articles).forEach((article) => {
+          const articleCategories =
+            article.getAttribute("data-categories")?.split(",") || [];
+
+          // Show article if no categories are selected or if it matches any selected category
+          const shouldShow =
+            selectedCategories.size === 0 ||
+            articleCategories.some((cat) => selectedCategories.has(cat));
+
+          article.style.display = shouldShow ? "" : "none";
+        });
+      }
+    });
+  });
+
+  // Add hover effect for selected categories
+  categoryFilters.forEach((filter) => {
+    filter.addEventListener("mouseenter", () => {
+      if (!filter.classList.contains("bg-indigo-600")) {
+        filter.classList.add("bg-gray-200");
+      }
+    });
+
+    filter.addEventListener("mouseleave", () => {
+      if (!filter.classList.contains("bg-indigo-600")) {
+        filter.classList.remove("bg-gray-200");
+        filter.classList.add("bg-gray-100");
+      }
+    });
+  });
+</script>
+
+<style>
+  .blog-card {
+    background-color: #f4f4f4;
+  }
+</style>

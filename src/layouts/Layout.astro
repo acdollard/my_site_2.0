@@ -2,6 +2,8 @@
 // ./src/layouts/Layout.astro
 import { VisualEditing } from "@sanity/astro/visual-editing";
 import Navbar from "../components/Navbar.astro";
+import backgroundImage from "../assets/background1.png";
+
 const visualEditingEnabled =
   import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED == "true";
 ---
@@ -14,19 +16,31 @@ const visualEditingEnabled =
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>T.W.A.T. | This Week in AlexTown</title>
+    <style>
+      /* Critical CSS for background */
+      .bg-pattern {
+        background-image: url("/background1.webp");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      /* Optimize background loading */
+      @media (max-width: 640px) {
+        .bg-pattern {
+          background-image: url("/background1-mobile.webp");
+        }
+      }
+    </style>
   </head>
-  <body>
-    <Navbar />
-    <slot />
-    <VisualEditing enabled={visualEditingEnabled} />
+  <body class="bg-pattern">
+    <div class="bg-overlay">
+      <Navbar />
+      <slot />
+      <VisualEditing enabled={visualEditingEnabled} />
+    </div>
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>
