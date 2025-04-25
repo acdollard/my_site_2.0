@@ -16,7 +16,6 @@
     "@astrojs/tailwind": "^5.1.0",
     "@portabletext/types": "^2.0.13",
     "@sanity/astro": "^3.2.5",
-    "@sanity/astro/visual-editing": "^3.2.5",
     "@sanity/client": "^6.28.0",
     "@sanity/image-url": "^1.1.0",
     "@types/react": "^19.0.10",
@@ -27,8 +26,8 @@
     "react-dom": "^19.0.0",
     "react-is": "^19.0.0",
     "sanity": "^3.76.3",
-    "styled-components": "^6.1.15",
-    "sharp": "^0.33.2"
+    "sharp": "^0.33.2",
+    "styled-components": "^6.1.15"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^6.0.0",
