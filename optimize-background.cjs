@@ -2,7 +2,7 @@ const sharp = require("sharp");
 const fs = require("fs");
 const path = require("path");
 
-const inputImage = path.join(__dirname, "src", "assets", "background1.jpg");
+const inputImage = path.join(__dirname, "src", "assets", "dusty.jpg");
 const outputDir = path.join(__dirname, "public");
 
 // Ensure output directory exists
@@ -22,9 +22,11 @@ async function optimizeImage() {
       await sharp(inputImage)
         .resize(size.width)
         .webp({ quality: 80 })
-        .toFile(path.join(outputDir, `background1${size.suffix}.webp`));
+        .toFile(path.join(outputDir, `background1_dust${size.suffix}.webp`));
 
-      console.log(`Created optimized image: background1${size.suffix}.webp`);
+      console.log(
+        `Created optimized image: background1_dust${size.suffix}.webp`
+      );
     }
   } catch (error) {
     console.error("Error optimizing images:", error);

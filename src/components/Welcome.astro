@@ -53,17 +53,20 @@ console.log(categories);
 ---
 
 <div id="container" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-  <main class="mx-auto max-w-7xl sm:px-6 lg:px-8 py-6 md:py-8">
+  <main class="mx-auto max-w-7xl sm:px-4 lg:px-8 py-6 md:py-8">
     <div class="flex flex-col items-center">
       <h1
-        class="text-4xl md:text-6xl font-bold text-slate-800 font-quintessential text-center"
+        class="text-4xl md:text-6xl font-bold text-slate-100 font-quintessential text-center"
       >
-        This Week in AlexTown
+        <span class="text-indigo-500">T</span>his
+        <span class="text-indigo-500">W</span>eek in <span
+          class="text-indigo-500">A</span
+        >lex<span class="text-indigo-500">T</span>own
       </h1>
       <h2
-        class="text-2xl md:text-4xl font-bold text-slate-800 font-quintessential text-center pt-2"
+        class="text-2xl md:text-4xl font-bold text-slate-100 font-quintessential text-center pt-6"
       >
-        A blog by a dingus
+        A blog by a dingus.<br /> New posts every Sunday.
       </h2>
     </div>
   </main>
@@ -71,7 +74,7 @@ console.log(categories);
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
     <!-- Category Filter -->
     <div class="mb-8">
-      <div class="text-sm font-medium text-slate-800 mb-3">
+      <div class="text-sm font-medium text-slate-100 mb-3">
         Filter by Categories
       </div>
       <div class="flex flex-wrap gap-2" id="category-filters">
@@ -80,7 +83,7 @@ console.log(categories);
             <button
               type="button"
               data-category-id={category._id}
-              class="category-filter inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 transition-colors duration-200"
+              class="category-filter inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 transition-colors duration-200"
             >
               {category.title}
             </button>
