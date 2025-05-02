@@ -25,13 +25,25 @@ const visualEditingEnabled =
     <style>
       /* Critical CSS for background */
       .bg-pattern {
-        background-image: url("/background1_dust.webp");
-        background-size: cover;
+        background-image: url("/dust-mobile.jpg");
         background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
+        background-repeat: repeat;
         min-height: 100vh;
         position: relative;
+      }
+
+      @media (min-width: 640px) {
+        .bg-pattern {
+          background-image: url("/background1_dust-tablet.webp");
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .bg-pattern {
+          background-image: url("/background1_dust.webp");
+          background-attachment: fixed;
+          background-size: cover;
+        }
       }
     </style>
   </head>
