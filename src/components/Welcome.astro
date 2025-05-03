@@ -83,7 +83,7 @@ console.log(categories);
             <button
               type="button"
               data-category-id={category._id}
-              class="category-filter inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 transition-colors duration-200"
+              class="category-filter inline-flex items-center px-3 py-1.5 rounded-sm text-sm font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 transition-colors duration-200"
             >
               {category.title}
             </button>
@@ -99,7 +99,7 @@ console.log(categories);
       {
         posts.map((post: Post) => (
           <article
-            class="blog-card rounded-lg overflow-hidden hover:-translate-y-1 transition-transform duration-200 ease-in-out border border-gray-200"
+            class="blog-card rounded-sm overflow-hidden hover:-translate-y-1 transition-transform duration-200 ease-in-out border border-gray-200"
             data-categories={post.categories?.map((cat) => cat._id).join(",")}
           >
             {post.mainImage && (
