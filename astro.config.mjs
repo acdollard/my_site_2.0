@@ -15,6 +15,7 @@ const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } = loadEnv(
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://thisweekinalex.town", // Replace with your actual domain
   integrations: [
     sanity({
       projectId: PUBLIC_SANITY_PROJECT_ID,
