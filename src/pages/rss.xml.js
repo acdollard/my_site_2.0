@@ -23,7 +23,7 @@ export async function GET(context) {
     console.error("No posts found or invalid data structure:", posts);
     return rss({
       title: "T.W.A.T. | This Week in AlexTown",
-      description: "A blog by a dingus. New posts every Sunday.",
+      description: "A blog by a dingus. New posts every so often.",
       site: context.site,
       items: [],
       customData: `<language>en-us</language>`,

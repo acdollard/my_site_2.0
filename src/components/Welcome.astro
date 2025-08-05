@@ -47,9 +47,6 @@ const { posts, categories } = await sanityClient.fetch<{
   posts: Post[];
   categories: Category[];
 }>(query);
-
-console.log(posts);
-console.log(categories);
 ---
 
 <div id="container" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
